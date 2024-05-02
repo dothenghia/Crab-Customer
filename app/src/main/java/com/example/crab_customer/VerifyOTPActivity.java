@@ -1,5 +1,6 @@
 package com.example.crab_customer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +20,7 @@ public class VerifyOTPActivity extends AppCompatActivity {
     EditText otpInput;
     ImageView backBtn;
     TextView phoneNumberTextView, resendOtpTextView;
+    Button submitBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +31,16 @@ public class VerifyOTPActivity extends AppCompatActivity {
         phoneNumberTextView = findViewById(R.id.otp_subtitle);
         otpInput = findViewById(R.id.otp_phone_number);
         resendOtpTextView = findViewById(R.id.otp_resend);
+        submitBtn = findViewById(R.id.otp_submit);
 
         phoneNumber = getIntent().getExtras().getString("phone");
         phoneNumberTextView.setText(phoneNumber);
         sendOtp(phoneNumber,false);
 
+        submitBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(VerifyOTPActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
         /*resendOtpTextView.setOnClickListener((v)->{
             sendOtp(phoneNumber,true);
         });*/
