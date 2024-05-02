@@ -8,4 +8,9 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">#676767</item>
     </style>
+    <style name="title_1">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>
