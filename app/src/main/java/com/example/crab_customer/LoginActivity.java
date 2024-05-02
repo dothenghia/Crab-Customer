@@ -27,5 +27,10 @@ public class LoginActivity extends AppCompatActivity {
         sendOtpBtn = findViewById(R.id.login_nextbtn);
         countryCodePicker.registerCarrierNumberEditText(phoneInput);
         backBtn.setOnClickListener(v -> finish());
+        sendOtpBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, VerifyOTPActivity.class);
+            intent.putExtra("phone", countryCodePicker.getFullNumberWithPlus());
+            startActivity(intent);
+        });
     }
 }
