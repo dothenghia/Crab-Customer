@@ -9,4 +9,5 @@
     <color name="text_heading">#3C3C3C</color>
     <color name="text_title">#222222</color>
     <color name="text_subtitle">#696969</color>
+    <color name="error">#990F02</color>
 </resources>
