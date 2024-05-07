@@ -1,6 +1,8 @@
 package com.example.crab_customer;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -11,18 +13,26 @@ public class IntroActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_intro);
-
-        loginBtn = findViewById(R.id.intro_btn_login);
-        loginBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(IntroActivity.this, LoginActivity.class);
+        SharedPreferences sharedPreferences = getSharedPreferences("loginState", Context.MODE_PRIVATE);
+        boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
+        if (isLoggedIn) {
+            Intent intent = new Intent(IntroActivity.this, MainActivity.class);
             startActivity(intent);
+            finish();
+        } else {
+            setContentView(R.layout.activity_intro);
 
-        });
-        registerBtn = findViewById(R.id.intro_btn_register);
-        registerBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(IntroActivity.this, RegisterActivity.class);
-            startActivity(intent);
-        });
+            loginBtn = findViewById(R.id.intro_btn_login);
+            loginBtn.setOnClickListener(v -> {
+                Intent intent = new Intent(IntroActivity.this, LoginActivity.class);
+                startActivity(intent);
+
+            });
+            registerBtn = findViewById(R.id.intro_btn_register);
+            registerBtn.setOnClickListener(v -> {
+                Intent intent = new Intent(IntroActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            });
+        }
     }
 }

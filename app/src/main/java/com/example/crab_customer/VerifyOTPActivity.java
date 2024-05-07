@@ -1,6 +1,8 @@
 package com.example.crab_customer;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -117,7 +119,7 @@ public class VerifyOTPActivity extends AppCompatActivity {
 
                         Log.d("signIn", "signInWithCredential:success");
                         FirebaseUser user = task.getResult().getUser();
-
+                        saveLoginState(true);
                         Intent intent = new Intent(VerifyOTPActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
@@ -131,4 +133,11 @@ public class VerifyOTPActivity extends AppCompatActivity {
                     }
                 });
     }
+    private void saveLoginState(boolean isLoggedIn) {
+        SharedPreferences sharedPreferences = getSharedPreferences("loginState", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isLoggedIn", isLoggedIn);
+        editor.apply();
+    }
+
 }
