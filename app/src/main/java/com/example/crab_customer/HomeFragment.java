@@ -1,6 +1,7 @@
 package com.example.crab_customer;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -15,6 +16,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,7 +58,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
     private AutocompleteSupportFragment autocompleteSupportFragment;
-
+    Button confirmWhereToBtn;
+    Place selectedPlace;
     @Override
     public void onDestroy() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
@@ -71,7 +74,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -79,19 +81,26 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         init();
-        initView(view);
         // Inflate the layout for this fragment
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        confirmWhereToBtn = view.findViewById(R.id.confirmWhereToBtn);
+        confirmWhereToBtn.setOnClickListener(v -> {
+            if (selectedPlace == null) {
+                Toast.makeText(getContext(), "Please select a destination", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Intent intent = new Intent(getContext(), ConfirmPickupActivity.class);
+                intent.putExtra("selected_place_name", selectedPlace.getName());
+                intent.putExtra("selected_place_latlng", selectedPlace.getLatLng());
+                startActivity(intent);
+            }
+        });
         return view;
     }
 
-    private void initView(View view) {
-
-    }
-
     private void init() {
-        Places.initialize(getContext(), getString(R.string.google_map_key));
+        Places.initialize(getContext(), "AIzaSyCMXUt6IZ2KmeHUcfUvXAZSUYtgWHazBCI");
         autocompleteSupportFragment = (AutocompleteSupportFragment) getChildFragmentManager()
                 .findFragmentById(R.id.autocompleteFragment);
         autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.ADDRESS, Place.Field.NAME, Place.Field.LAT_LNG));
@@ -106,6 +115,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 Toast.makeText(getContext(), "" + place.getLatLng(), Toast.LENGTH_SHORT).show();
+                LatLng latLng;
+                latLng = place.getLatLng();
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);
+                markerOptions.title(place.getName());
+                mMap.clear();
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f));
+                mMap.addMarker(markerOptions);
+                selectedPlace = place;
             }
         });
 
@@ -135,22 +153,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(@NonNull LatLng latLng) {
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(latLng);
-                markerOptions.title(latLng.latitude + ":" + latLng.longitude);
-                googleMap.clear();
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                googleMap.addMarker(markerOptions);
-            }
+        googleMap.setOnMapClickListener(latLng -> {
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(latLng);
+            markerOptions.title(latLng.latitude + ":" + latLng.longitude);
+            googleMap.clear();
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f));
+            googleMap.addMarker(markerOptions);
         });
-        MarkerOptions markerOptions = new MarkerOptions();
-        LatLng latLng = new LatLng(10.762886, 106.682667);
-        markerOptions.position(latLng);
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-        googleMap.addMarker(markerOptions);
         Dexter.withContext(getContext())
                 .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                 .withListener(new PermissionListener() {

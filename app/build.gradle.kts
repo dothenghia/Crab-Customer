@@ -52,4 +52,6 @@ dependencies {
     implementation("com.karumi:dexter:6.2.3")
 
     implementation("com.google.android.libraries.places:places:3.4.0")
+    implementation("com.google.maps:google-maps-services:2.2.0")
+    implementation ("com.google.maps.android:android-maps-utils:3.8.2")
 }
