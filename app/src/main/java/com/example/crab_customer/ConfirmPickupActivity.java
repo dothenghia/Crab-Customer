@@ -128,6 +128,7 @@ public class ConfirmPickupActivity extends AppCompatActivity implements OnMapRea
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 18f));
         googleMap.setOnMapClickListener(latLng -> {
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(latLng);
@@ -156,23 +157,6 @@ public class ConfirmPickupActivity extends AppCompatActivity implements OnMapRea
     @Override
     protected void onResume() {
         super.onResume();
-        startLocationUpdates();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        stopLocationUpdates();
-    }
-
-    private void startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-    }
-
-    private void stopLocationUpdates() {
-        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-    }
 }

@@ -171,21 +171,18 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                         }
                         googleMap.setMyLocationEnabled(true);
                         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-                        googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-                            @Override
-                            public boolean onMyLocationButtonClick() {
-                                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                                        ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                                    return false;
-                                }
-                                fusedLocationProviderClient.getLastLocation()
-                                        .addOnFailureListener(e -> Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show())
-                                        .addOnSuccessListener(location -> {
-                                            LatLng userLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 18f));
-                                        });
-                                return true;
+                        googleMap.setOnMyLocationButtonClickListener(() -> {
+                            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                                    ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                return false;
                             }
+                            fusedLocationProviderClient.getLastLocation()
+                                    .addOnFailureListener(e -> Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show())
+                                    .addOnSuccessListener(location -> {
+                                        LatLng userLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 18f));
+                                    });
+                            return true;
                         });
 
                         View locationButton = ((View)mapFragment.getView().findViewById(Integer.parseInt("1")).getParent())

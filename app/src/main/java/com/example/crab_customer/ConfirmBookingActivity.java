@@ -1,15 +1,22 @@
 package com.example.crab_customer;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -24,7 +31,7 @@ import java.util.List;
 
 public class ConfirmBookingActivity extends AppCompatActivity implements OnMapReadyCallback {
     private  GoogleMap myMap;
-    private String apiKey = "AIzaSyCyz0FsiHa0l6mRP1GQISgBVF27bgJb2-c";
+    private String apiKey = "AIzaSyCMXUt6IZ2KmeHUcfUvXAZSUYtgWHazBCI";
     private LatLng destinationLatLng;
     private LatLng pickupLatLng;
     String destinationName;
@@ -41,11 +48,18 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
         mapFragment.getMapAsync(this);
 
     }
-
+    private BitmapDescriptor getBitmapDescriptor(int drawableResourceId) {
+        Drawable drawable = ContextCompat.getDrawable(this, drawableResourceId);
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
     public void Direction(LatLng start, LatLng end, @NonNull GoogleMap googleMap){
         myMap = googleMap;
-        myMap.addMarker(new MarkerOptions().position(start).title("start"));
-        myMap.addMarker(new MarkerOptions().position(end).title("end"));
+        myMap.addMarker(new MarkerOptions().position(start).title("start").icon(getBitmapDescriptor(R.drawable.marker_start)));
+        myMap.addMarker(new MarkerOptions().position(end).title("end").icon(getBitmapDescriptor(R.drawable.marker_end)));
         GeoApiContext context = new GeoApiContext.Builder().apiKey(apiKey).build();
         DirectionsResult directionsResult;
         try {
@@ -58,8 +72,8 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
                 List<LatLng> path = PolyUtil.decode(directionsResult.routes[0].overviewPolyline.getEncodedPath());
                 PolylineOptions polylineOptions = new PolylineOptions()
                         .addAll(path)
-                        .width(10)
-                        .color(R.color.primary_1);
+                        .width(15)
+                        .color(Color.rgb(0,129,76));
                 myMap.addPolyline(polylineOptions);
 
                 // Set camera bounds to include entire route
@@ -77,7 +91,6 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         myMap = googleMap;
-
         Direction(pickupLatLng,destinationLatLng,myMap);
 
     }
