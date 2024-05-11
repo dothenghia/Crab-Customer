@@ -197,9 +197,8 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
     }
     private void checkAddressExisted(LatLng latLng, String name, OnAddressCheckedListener listener) {
         Query query = db.collection("DiaChi")
-                .whereEqualTo("KinhDo", latLng.latitude)
-                .whereEqualTo("ViDo", latLng.longitude)
-                .whereEqualTo("TenDiaChi", name);
+                .whereEqualTo("KinhDo", latLng.longitude)
+                .whereEqualTo("ViDo", latLng.latitude);
 
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -219,10 +218,10 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
     private void addAddressToDatabase(LatLng latLng, String name, OnAddressCheckedListener listener) {
         DocumentReference DiaChiRef = db.collection("DiaChi").document();
         Map<String, Object> data = new HashMap<>();
-        data.put("KinhDo", latLng.latitude);
+        data.put("KinhDo", latLng.longitude);
         data.put("TenDiaChi", name);
         data.put("TenDiaChiArray", Arrays.asList(name.split("\\s+")));
-        data.put("ViDo", latLng.longitude);
+        data.put("ViDo", latLng.latitude);
         DiaChiRef.set(data)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("db", "Document added successfully!");
