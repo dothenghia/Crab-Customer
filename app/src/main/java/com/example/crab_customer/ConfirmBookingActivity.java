@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -24,15 +25,25 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.firebase.Firebase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.maps.DirectionsApi;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.GeoApiContext;
 import com.google.maps.android.PolyUtil;
+import com.google.maps.android.SphericalUtil;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.TravelMode;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ConfirmBookingActivity extends AppCompatActivity implements OnMapReadyCallback {
     private  GoogleMap myMap;
@@ -41,10 +52,14 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
     private LatLng pickupLatLng;
     String destinationName;
     String pickupName;
+    private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private double distance;
     private ListView carListView;
     private Button confirmButton;
     private VehicleAdapter adapter;
     private List<VehicleAdapter.Vehicle> vehicleList;
+    DocumentReference DiaChiDonRef, DiaChiDenRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +68,8 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
         destinationLatLng = getIntent().getParcelableExtra("destination_latlng");
         pickupName = getIntent().getStringExtra("pickup_name");
         pickupLatLng = getIntent().getParcelableExtra("pickup_latlng");
+        checkAddressExisted(destinationLatLng, destinationName, documentReference -> DiaChiDenRef =  documentReference);
+        checkAddressExisted(pickupLatLng, pickupName, documentReference -> DiaChiDonRef = documentReference);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map3);
         mapFragment.getMapAsync(this);
 
@@ -75,29 +92,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
         confirmButton = findViewById(R.id.confirmBtn);
 
         // Create dummy data
-        vehicleList = new ArrayList<>();
-        vehicleList.add(new VehicleAdapter.Vehicle(R.drawable.bike,"Bike", "10000d"));
-        vehicleList.add(new VehicleAdapter.Vehicle(R.drawable.bike,"Car", "154512d"));
-        vehicleList.add(new VehicleAdapter.Vehicle(R.drawable.bike,"Plane", "1254100d"));
 
-        // Set up the adapter
-        adapter = new VehicleAdapter(this, vehicleList);
-        carListView.setAdapter(adapter);
-
-        // Handle item click
-        carListView.setOnItemClickListener((parent, view, position, id) -> {
-            adapter.setSelectedItem(position);
-        });
-
-        // Handle confirm button click
-        confirmButton.setOnClickListener(v -> {
-            if (adapter.getSelectedItem() != -1) {
-                VehicleAdapter.Vehicle selectedCar = vehicleList.get(adapter.getSelectedItem());
-                Toast.makeText(ConfirmBookingActivity.this, "Selected car: " + selectedCar.getType(), Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(ConfirmBookingActivity.this, "Please select a car", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
     private BitmapDescriptor getBitmapDescriptor(int drawableResourceId) {
         Drawable drawable = ContextCompat.getDrawable(this, drawableResourceId);
@@ -107,7 +102,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
         drawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
-    public void Direction(LatLng start, LatLng end, @NonNull GoogleMap googleMap){
+    public double Direction(LatLng start, LatLng end, @NonNull GoogleMap googleMap){
         myMap = googleMap;
         myMap.addMarker(new MarkerOptions().position(start).title("start").icon(getBitmapDescriptor(R.drawable.marker_start)));
         myMap.addMarker(new MarkerOptions().position(end).title("end").icon(getBitmapDescriptor(R.drawable.marker_end)));
@@ -134,16 +129,110 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
                 }
                 LatLngBounds bounds = boundsBuilder.build();
                 myMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
+                double distance = SphericalUtil.computeLength(path)/1000;
+                return distance;
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return 0;
         }
+        return 0;
     }
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         myMap = googleMap;
-        Direction(pickupLatLng,destinationLatLng,myMap);
+        distance = Direction(pickupLatLng,destinationLatLng,myMap);
+        vehicleList = new ArrayList<>();
+        DecimalFormat decimalFormat = new DecimalFormat("#,###.##");
 
+        vehicleList.add(new VehicleAdapter.Vehicle(R.drawable.bike,"Bike", decimalFormat.format(Math.round(7000*distance/10)*10)+"đ"));
+        vehicleList.add(new VehicleAdapter.Vehicle(R.drawable.small,"Small", decimalFormat.format(Math.round(12000*distance/10)*10)+"đ"));
+        vehicleList.add(new VehicleAdapter.Vehicle(R.drawable.medium,"Medium", decimalFormat.format(Math.round(15000*distance/10)*10)+"đ"));
+
+        // Set up the adapter
+        adapter = new VehicleAdapter(this, vehicleList);
+        carListView.setAdapter(adapter);
+
+        // Handle item click
+        carListView.setOnItemClickListener((parent, view, position, id) -> {
+            adapter.setSelectedItem(position);
+        });
+
+        // Handle confirm button click
+        confirmButton.setOnClickListener(v -> {
+            if (adapter.getSelectedItem() != -1) {
+                VehicleAdapter.Vehicle selectedCar = vehicleList.get(adapter.getSelectedItem());
+                Toast.makeText(ConfirmBookingActivity.this, "Selected car: " + selectedCar.getType(), Toast.LENGTH_SHORT).show();
+                Map<String, Object> chuyenXe = new HashMap<>();
+                chuyenXe.put("DiaChiDon", DiaChiDonRef);
+                chuyenXe.put("DiaChiDen", DiaChiDenRef);
+                String giaTien = selectedCar.getPrice().replace("đ", "");
+                giaTien = giaTien.replace(",","");
+                chuyenXe.put("GiaTien", Integer.parseInt(giaTien));
+                chuyenXe.put("HinhThucDatXe", "app");
+                switch (selectedCar.getType()) {
+                    case "Bike":
+                        chuyenXe.put("IDLoaiXe", "1");
+                        break;
+                    case "Small":
+                        chuyenXe.put("IDLoaiXe", "2");
+                        break;
+                    case "Medium":
+                        chuyenXe.put("IDLoaiXe", "3");
+                        break;
+                }
+                chuyenXe.put("IDTaiXe", "");
+                DocumentReference ChuyenXeRef = db.collection("ChuyenXe").document();
+                ChuyenXeRef.set(chuyenXe)
+                        .addOnSuccessListener(aVoid -> {
+                            Log.d("db", "Document added successfully!");
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.w("db", "Error adding document", e);
+                        });
+            } else {
+                Toast.makeText(ConfirmBookingActivity.this, "Please select a car", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void checkAddressExisted(LatLng latLng, String name, OnAddressCheckedListener listener) {
+        Query query = db.collection("DiaChi")
+                .whereEqualTo("KinhDo", latLng.latitude)
+                .whereEqualTo("ViDo", latLng.longitude)
+                .whereEqualTo("TenDiaChi", name);
+
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (!task.getResult().isEmpty()) {
+                    Log.d("db", "Address already exists in database");
+                    DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                    listener.onAddressChecked(documentSnapshot.getReference());
+                } else {
+                    addAddressToDatabase(latLng, name, listener);
+                }
+            } else {
+                Log.w("db", "Error getting documents: ", task.getException());
+            }
+        });
     }
 
+    private void addAddressToDatabase(LatLng latLng, String name, OnAddressCheckedListener listener) {
+        DocumentReference DiaChiRef = db.collection("DiaChi").document();
+        Map<String, Object> data = new HashMap<>();
+        data.put("KinhDo", latLng.latitude);
+        data.put("TenDiaChi", name);
+        data.put("TenDiaChiArray", Arrays.asList(name.split("\\s+")));
+        data.put("ViDo", latLng.longitude);
+        DiaChiRef.set(data)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("db", "Document added successfully!");
+                    listener.onAddressChecked(DiaChiRef);
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("db", "Error adding document", e);
+                });
+    }
+    interface OnAddressCheckedListener {
+        void onAddressChecked(DocumentReference documentReference);
+    }
 }
