@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="7dp">
+
+    <ImageView
+        android:id="@+id/vehicleImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bike"/>
+    <TextView
+        android:id="@+id/vehicleType"
+        android:layout_width="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Bike"
+        android:layout_gravity="center_vertical"
+        style="@style/title_1"/>
+
+    <TextView
+        android:id="@+id/vehiclePrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="120.000d"
+        android:layout_marginEnd="10dp"
+        style="@style/title_1"/>
+
+</LinearLayout>

@@ -13,5 +13,5 @@
     <string name="menu_item3">Profile</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">MapsActivity</string>
-    <string name="google_map_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCyz0FsiHa0l6mRP1GQISgBVF27bgJb2-c</string>
+    <string name="google_map_key">AIzaSyDgohAtKGWMmVInl5FpwiUdmdiwFGcM-Cs</string>
 </resources>
