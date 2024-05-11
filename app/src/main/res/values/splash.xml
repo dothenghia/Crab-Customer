@@ -3,5 +3,6 @@
     <style name="Theme.CrabCustomer.MySplash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/primary_1</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/logo_splash</item>
+        <item name="postSplashScreenTheme">@style/Base.Theme.CrabCustomer</item>
     </style>
 </resources>

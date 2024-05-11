@@ -1,5 +1,6 @@
 package com.example.crab_customer;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -185,6 +186,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
                 DocumentReference ChuyenXeRef = db.collection("ChuyenXe").document();
                 ChuyenXeRef.set(chuyenXe)
                         .addOnSuccessListener(aVoid -> {
+                            navigateToRequestActivity();
                             Log.d("db", "Document added successfully!");
                         })
                         .addOnFailureListener(e -> {
@@ -233,5 +235,13 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
     }
     interface OnAddressCheckedListener {
         void onAddressChecked(DocumentReference documentReference);
+    }
+    private void navigateToRequestActivity() {
+        Intent intent = new Intent(ConfirmBookingActivity.this, RequestDriverActivity.class);
+        intent.putExtra("pickup_name", pickupLatLng);
+        intent.putExtra("pickup_latlng", pickupName);
+        intent.putExtra("destination_name", destinationName);
+        intent.putExtra("destination_latlng", destinationLatLng);
+        startActivity(intent);
     }
 }

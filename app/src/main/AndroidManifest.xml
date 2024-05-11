@@ -15,6 +15,9 @@
         android:theme="@style/Theme.CrabCustomer"
         tools:targetApi="31">
         <activity
+            android:name=".RequestDriverActivity"
+            android:exported="false" />
+        <activity
             android:name=".ConfirmBookingActivity"
             android:exported="false" />
         <activity
