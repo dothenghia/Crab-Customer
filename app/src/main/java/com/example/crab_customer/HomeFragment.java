@@ -114,7 +114,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                Toast.makeText(getContext(), "" + place.getLatLng(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "" + place.getLatLng(), Toast.LENGTH_SHORT).show();
                 LatLng latLng;
                 latLng = place.getLatLng();
                 MarkerOptions markerOptions = new MarkerOptions();

@@ -163,7 +163,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
         confirmButton.setOnClickListener(v -> {
             if (adapter.getSelectedItem() != -1) {
                 VehicleAdapter.Vehicle selectedCar = vehicleList.get(adapter.getSelectedItem());
-                Toast.makeText(ConfirmBookingActivity.this, "Selected car: " + selectedCar.getType(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ConfirmBookingActivity.this, "Selected car: " + selectedCar.getType(), Toast.LENGTH_SHORT).show();
                 Map<String, Object> chuyenXe = new HashMap<>();
                 chuyenXe.put("DiaChiDon", DiaChiDonRef);
                 chuyenXe.put("DiaChiDen", DiaChiDenRef);

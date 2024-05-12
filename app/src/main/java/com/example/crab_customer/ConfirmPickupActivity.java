@@ -91,7 +91,7 @@ public class ConfirmPickupActivity extends AppCompatActivity implements OnMapRea
 
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                Toast.makeText(ConfirmPickupActivity.this, "" + place.getLatLng(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ConfirmPickupActivity.this, "" + place.getLatLng(), Toast.LENGTH_SHORT).show();
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(place.getLatLng());
                 markerOptions.title(place.getName());
