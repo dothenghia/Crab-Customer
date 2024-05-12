@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:text="Default name"
+                android:text="Lee Thanh Trung"
                 style="@style/Base.CardView"/>
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="wrap_content"
@@ -46,6 +46,7 @@
                 android:paddingEnd="20dp"
                 android:background="@drawable/button_success"
                 android:layout_gravity="center"
+                android:textAllCaps="false"
                 android:text="Edit profile"/>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -97,7 +98,7 @@
                         android:id="@+id/securityIcon"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/baseline_back_hand_24"
+                        android:src="@drawable/security"
                         android:padding="12sp"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -121,7 +122,7 @@
                         android:id="@+id/languageIcon"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/baseline_back_hand_24"
+                        android:src="@drawable/language"
                         android:padding="12sp"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -145,7 +146,7 @@
                         android:id="@+id/faqIcon"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/baseline_back_hand_24"
+                        android:src="@drawable/faq"
                         android:padding="12sp"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -169,7 +170,7 @@
                         android:id="@+id/aboutIcon"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/baseline_back_hand_24"
+                        android:src="@drawable/aboutus"
                         android:padding="12sp"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -196,6 +197,7 @@
                 android:background="@drawable/button_error"
                 android:layout_gravity="center"
                 android:textColor="@color/white"
+                android:textAllCaps="false"
                 android:text="Log out"/>
         </LinearLayout>
     </ScrollView>

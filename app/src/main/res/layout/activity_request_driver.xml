@@ -35,6 +35,7 @@
         android:padding="7dp">
 
         <ImageView
+            android:id="@+id/carType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/bike"/>
@@ -65,6 +66,7 @@
                 android:layout_height="20dp"
                 android:src="@drawable/marker_start"/>
             <TextView
+                android:id="@+id/pick_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="From pickup spot"
@@ -79,6 +81,7 @@
                 android:layout_height="20dp"
                 android:src="@drawable/marker_end"/>
             <TextView
+                android:id="@+id/destination"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="To destination"
@@ -130,6 +133,116 @@
             android:gravity="center_horizontal"
             style="@style/title_1"
             android:textColor="@color/error"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/driverLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_background_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/quantum_grey300">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:padding="10dp"
+                android:text="Driver is on the way"
+                style="@style/title_1"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="5 min"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:paddingEnd="10dp"
+                style="@style/title_1"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_margin="20dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/avatar"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bike"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="57dp"
+                android:gravity="end">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="59-ABCDE"
+                    style="@style/title_1"
+                    android:textSize="30sp"
+                    android:textAlignment="textEnd"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wave Alpha"/>
+            </LinearLayout>
+            
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lê Thị Hoài Thư    5.0"/>
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/star"/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/quantum_grey100"
+            android:layout_marginTop="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_margin="20dp"
+            android:padding="5dp"
+            android:background="@color/pressed_bg">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:padding="5dp"
+                android:src="@drawable/chat_writing_svgrepo_com"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:text="Chat with your driver"/>
+
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

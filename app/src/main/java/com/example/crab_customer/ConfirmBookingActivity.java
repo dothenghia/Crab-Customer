@@ -168,8 +168,8 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
                 chuyenXe.put("DiaChiDon", DiaChiDonRef);
                 chuyenXe.put("DiaChiDen", DiaChiDenRef);
                 String giaTien = selectedCar.getPrice().replace("đ", "");
-                giaTien = giaTien.replace(",","");
-                chuyenXe.put("GiaTien", Integer.parseInt(giaTien));
+                String giaTien1 = giaTien.replace(",","");
+                chuyenXe.put("GiaTien", Integer.parseInt(giaTien1));
                 chuyenXe.put("HinhThucDatXe", "app");
                 switch (selectedCar.getType()) {
                     case "Bike":
@@ -186,12 +186,21 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
                 DocumentReference ChuyenXeRef = db.collection("ChuyenXe").document();
                 ChuyenXeRef.set(chuyenXe)
                         .addOnSuccessListener(aVoid -> {
-                            navigateToRequestActivity();
+                            //navigateToRequestActivity();
                             Log.d("db", "Document added successfully!");
                         })
                         .addOnFailureListener(e -> {
                             Log.w("db", "Error adding document", e);
                         });
+
+                Intent intent = new Intent(ConfirmBookingActivity.this,RequestDriverActivity.class);
+                intent.putExtra("car_type", selectedCar.getType());
+                intent.putExtra("pickup_name", pickupName);
+                intent.putExtra("pickup_latlng", pickupLatLng);
+                intent.putExtra("destination_name", destinationName);
+                intent.putExtra("destination_latlng", destinationLatLng);
+                intent.putExtra("price",giaTien);
+                startActivity(intent);
             } else {
                 Toast.makeText(ConfirmBookingActivity.this, "Please select a car", Toast.LENGTH_SHORT).show();
             }
@@ -236,12 +245,13 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
     interface OnAddressCheckedListener {
         void onAddressChecked(DocumentReference documentReference);
     }
-    private void navigateToRequestActivity() {
+    /*private void navigateToRequestActivity() {
         Intent intent = new Intent(ConfirmBookingActivity.this, RequestDriverActivity.class);
         intent.putExtra("pickup_name", pickupLatLng);
         intent.putExtra("pickup_latlng", pickupName);
         intent.putExtra("destination_name", destinationName);
         intent.putExtra("destination_latlng", destinationLatLng);
+        intent.putExtra("car_type")
         startActivity(intent);
-    }
+    }*/
 }
