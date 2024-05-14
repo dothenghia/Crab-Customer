@@ -32,7 +32,7 @@ public class IntroActivity extends AppCompatActivity {
             });
             registerBtn = findViewById(R.id.intro_btn_register);
             registerBtn.setOnClickListener(v -> {
-                Intent intent = new Intent(IntroActivity.this, RegisterActivity.class);
+                Intent intent = new Intent(IntroActivity.this, LoginActivity.class);
                 startActivity(intent);
             });
         }

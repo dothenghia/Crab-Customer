@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.crab_customer.IntroActivity;
 import com.example.crab_customer.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class ProfileFragment extends Fragment {
 
@@ -35,6 +36,7 @@ public class ProfileFragment extends Fragment {
         logoutButton = rootView.findViewById(R.id.logout_btn);
         logoutButton.setOnClickListener(v -> {
             // Clear login state
+            FirebaseAuth.getInstance().signOut();
             clearLoginState();
             // Redirect to login activity
             Intent intent = new Intent(getActivity(), IntroActivity.class);

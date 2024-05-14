@@ -20,7 +20,13 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -119,6 +125,31 @@ public class VerifyOTPActivity extends AppCompatActivity {
 
                         Log.d("signIn", "signInWithCredential:success");
                         FirebaseUser user = task.getResult().getUser();
+                        boolean isNewUser = task.getResult().getAdditionalUserInfo().isNewUser();
+
+                        if (isNewUser) {
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                            // Create a new user document in the 'KhachHang' collection
+                            DocumentReference newUserRef = db.collection("KhachHang").document(user.getUid());
+
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+                            String currentDateTime = dateFormat.format(new Date());
+
+                            String hoTen = "Customer" + currentDateTime;
+                            Map<String, Object> userDetails = new HashMap<>();
+                            userDetails.put("Email", "");
+                            userDetails.put("GioiTinh", "");
+                            userDetails.put("HoTen", hoTen);
+                            userDetails.put("IDKhachHang", user.getUid());
+                            userDetails.put("MatKhau", "");
+                            userDetails.put("TenTaiKhoan", "");
+                            userDetails.put("SDT", user.getPhoneNumber());
+
+                            newUserRef.set(userDetails)
+                                    .addOnSuccessListener(aVoid -> Log.d("Firestore", "DocumentSnapshot successfully written!"))
+                                    .addOnFailureListener(e -> Log.w("Firestore", "Error writing document", e));
+                        }
                         saveLoginState(true);
                         Intent intent = new Intent(VerifyOTPActivity.this, MainActivity.class);
                         startActivity(intent);
