@@ -27,6 +27,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -171,6 +173,11 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
                 String giaTien1 = giaTien.replace(",","");
                 chuyenXe.put("GiaTien", Integer.parseInt(giaTien1));
                 chuyenXe.put("HinhThucDatXe", "app");
+                chuyenXe.put("IDChuyenXe", "20240515123541");
+                chuyenXe.put("IDDiaChiDen", "20240515123541");
+                chuyenXe.put("IDDiaChiDon", "1");
+                chuyenXe.put("IDKhachHang", "20241505142000");
+                chuyenXe.put("IDKhachVangLai", "");
                 switch (selectedCar.getType()) {
                     case "Bike":
                         chuyenXe.put("IDLoaiXe", "1");
@@ -183,6 +190,12 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
                         break;
                 }
                 chuyenXe.put("IDTaiXe", "");
+                chuyenXe.put("IDTongDai", "");
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                DocumentReference userRef = db.collection("KhachHang").document(user.getUid());
+                chuyenXe.put("KhachHang", userRef);
+                chuyenXe.put("ThoiDiemBatDau", "");
+                chuyenXe.put("ThoiDiemKetThuc", "");
                 DocumentReference ChuyenXeRef = db.collection("ChuyenXe").document();
                 ChuyenXeRef.set(chuyenXe)
                         .addOnSuccessListener(aVoid -> {
