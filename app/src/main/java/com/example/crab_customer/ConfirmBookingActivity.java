@@ -50,7 +50,7 @@ import java.util.Map;
 
 public class ConfirmBookingActivity extends AppCompatActivity implements OnMapReadyCallback {
     private  GoogleMap myMap;
-    private String apiKey = "AIzaSyDoOZOf36HTmcY98rqkNPHkctY7pCLmGfU";
+    private String apiKey = "AIzaSyD73EGEnDLjF8SKerRMv1199xyA3UNMxDA";
     private LatLng destinationLatLng;
     private LatLng pickupLatLng;
     String destinationName;

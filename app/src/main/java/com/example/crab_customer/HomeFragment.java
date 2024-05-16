@@ -100,7 +100,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void init() {
-        Places.initialize(getContext(), "AIzaSyDoOZOf36HTmcY98rqkNPHkctY7pCLmGfU");
+        Places.initialize(getContext(), "AIzaSyD73EGEnDLjF8SKerRMv1199xyA3UNMxDA");
         autocompleteSupportFragment = (AutocompleteSupportFragment) getChildFragmentManager()
                 .findFragmentById(R.id.autocompleteFragment);
         autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.ADDRESS, Place.Field.NAME, Place.Field.LAT_LNG));

@@ -64,19 +64,12 @@ public class RequestDriverActivity extends AppCompatActivity implements OnMapRea
         // Initialize map fragment
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map4);
         mapFragment.getMapAsync(this);
-        mRunnable1 = new Runnable() {
-            @Override
-            public void run() {
-                showDriverDialog();
-            }
-        };
+        mRunnable1 = () -> showDriverDialog();
         mHandler1.postDelayed(mRunnable1,5000);
         mRunnable2 = () -> {
             // Hiển thị dialog hoàn thành chuyến xe
             showTripCompletedDialog();
         };
-
-        // Đặt bộ đếm thời gian cho 10 giây (bao gồm cả 5 giây trước đó)
         mHandler2.postDelayed(mRunnable2, 15000);
     }
 

@@ -75,7 +75,7 @@ public class ConfirmPickupActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void init() {
-        Places.initialize(this, "AIzaSyDoOZOf36HTmcY98rqkNPHkctY7pCLmGfU"); // Initialize Places API
+        Places.initialize(this, "AIzaSyD73EGEnDLjF8SKerRMv1199xyA3UNMxDA"); // Initialize Places API
 
         // Initialize AutocompleteSupportFragment
         autocompleteSupportFragment = (AutocompleteSupportFragment) getSupportFragmentManager()

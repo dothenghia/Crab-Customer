@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ProfileFragment">
+    tools:context=".ProfileFragment"
+    style="@style/BackgroundScreen">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,7 +31,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_menu_profile"/>
+                android:src="@drawable/avatar"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -56,7 +57,7 @@
                 android:layout_marginTop="40dp"
                 android:orientation="vertical"
                 android:padding="15dp"
-                android:background="@drawable/round_background_primary">
+                style="@style/BorderBackground">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -65,14 +66,16 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:src="@drawable/baseline_brightness_2_24"
-                        android:padding="12sp"/>
+                        android:padding="12sp" />
                     <TextView
+                        style="@style/TextColor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="Night Mode"
                         android:layout_toEndOf="@id/nightModeIcon"/>
                     <Switch
+                        android:id="@+id/nightModeSwitch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -89,7 +92,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
                 android:padding="15dp"
-                android:background="@drawable/round_background_primary">
+                style="@style/BorderBackground">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -101,6 +104,7 @@
                         android:src="@drawable/security"
                         android:padding="12sp"/>
                     <TextView
+                        style="@style/TextColor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -125,6 +129,7 @@
                         android:src="@drawable/language"
                         android:padding="12sp"/>
                     <TextView
+                        style="@style/TextColor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -149,6 +154,7 @@
                         android:src="@drawable/faq"
                         android:padding="12sp"/>
                     <TextView
+                        style="@style/TextColor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -173,6 +179,7 @@
                         android:src="@drawable/aboutus"
                         android:padding="12sp"/>
                     <TextView
+                        style="@style/TextColor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
