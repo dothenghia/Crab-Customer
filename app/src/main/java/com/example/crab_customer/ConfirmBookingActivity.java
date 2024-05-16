@@ -171,6 +171,7 @@ public class ConfirmBookingActivity extends AppCompatActivity implements OnMapRe
                 chuyenXe.put("DiaChiDen", DiaChiDenRef);
                 String giaTien = selectedCar.getPrice().replace("đ", "");
                 String giaTien1 = giaTien.replace(",","");
+                giaTien1 = giaTien1.replace(".", "");
                 chuyenXe.put("GiaTien", Integer.parseInt(giaTien1));
                 chuyenXe.put("HinhThucDatXe", "app");
                 chuyenXe.put("IDChuyenXe", "20240515123541");

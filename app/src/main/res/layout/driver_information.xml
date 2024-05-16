@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Car number: 59-V1 1234" />
+        android:text="Car number: 59-AB CDEF" />
 
     <TextView
         android:id="@+id/textView4"
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
 
-        android:text="Capacity: 4 slots" />
+        android:text="Capacity: 1 slot" />
 
 
     <Button
